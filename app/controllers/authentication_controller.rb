@@ -3,7 +3,7 @@ class AuthenticationController < ApplicationController
     @user = User.find_by(email: params[:email])
 
     if @user&.authenticate(params[:password])
-      token = JWT.encode({ user_id: @user.id }, 'your_secret_key', 'HS256')
+      token = JWT.encode(payload, ENV['JWT_SECRET_KEY'], 'HS256')
       render json: { token: token }, status: :ok
     else
       render json: { error: 'Invalid credentials' }, status: :unauthorized
